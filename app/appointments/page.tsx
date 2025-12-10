@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import gsap from 'gsap'
 import Link from 'next/link'
 import { servicesAPI, customersAPI, petsAPI, appointmentsAPI } from '@/lib/api'
 import { Service, Customer, Pet } from '@/lib/types'
 
-export default function AppointmentsPage() {
+function AppointmentsForm() {
   const searchParams = useSearchParams()
   const preSelectedService = searchParams.get('service')
   
@@ -400,5 +400,20 @@ export default function AppointmentsPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function AppointmentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-bounce">🐾</div>
+          <p className="text-xl text-slate-600">Cargando...</p>
+        </div>
+      </div>
+    }>
+      <AppointmentsForm />
+    </Suspense>
   )
 }
