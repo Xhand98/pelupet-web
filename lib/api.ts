@@ -1,12 +1,41 @@
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:8000';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
+  withCredentials: true,
+  withXSRFToken: true,
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+});
+
+// CSRF Token setup
+let csrfTokenFetched = false;
+
+const getCsrfToken = async () => {
+  if (!csrfTokenFetched) {
+    await axios.get(`${API_URL}/sanctum/csrf-cookie`, {
+      withCredentials: true,
+    });
+    csrfTokenFetched = true;
+  }
+};
+
+// Add request interceptor to get CSRF token before state-changing requests
+api.interceptors.request.use(async (config) => {
+  const method = config.method?.toLowerCase();
+  if (method && ['post', 'put', 'patch', 'delete'].includes(method)) {
+    await getCsrfToken();
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 // Services

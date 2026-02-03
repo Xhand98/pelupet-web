@@ -110,7 +110,7 @@ export default function DashboardPage() {
           </div>
           <div className="stats-card bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl p-6 text-white">
             <Calendar className="w-12 h-12 mb-2" />
-            <div className="text-3xl font-bold mb-1">{appointments.filter(a => a.status === 'scheduled').length}</div>
+            <div className="text-3xl font-bold mb-1">{appointments.filter(a => ['pending', 'confirmed'].includes(a.status)).length}</div>
             <div className="text-cyan-100">Citas Programadas</div>
           </div>
           <div className="stats-card bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-6 text-white">
@@ -159,11 +159,11 @@ export default function DashboardPage() {
                 + Agendar
               </Link>
             </div>
-            {appointments.filter(a => a.status === 'scheduled').length === 0 ? (
+            {appointments.filter(a => ['pending', 'confirmed'].includes(a.status)).length === 0 ? (
               <p className="text-slate-500 text-center py-8">No tienes citas programadas</p>
             ) : (
               <div className="space-y-4">
-                {appointments.filter(a => a.status === 'scheduled').slice(0, 3).map((appt) => (
+                {appointments.filter(a => ['pending', 'confirmed'].includes(a.status)).slice(0, 3).map((appt) => (
                   <div key={appt.id} className="p-4 bg-slate-50 rounded-xl">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold text-slate-800">{appt.service?.name}</h3>

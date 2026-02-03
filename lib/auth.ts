@@ -3,16 +3,16 @@ import type { User, LoginCredentials, RegisterData, AuthResponse } from './auth-
 
 export const authAPI = {
   login: (credentials: LoginCredentials) => 
-    api.post<AuthResponse>('/login', credentials),
+    api.post<AuthResponse>('/auth/login', credentials),
   
   register: (data: RegisterData) => 
-    api.post<AuthResponse>('/register', data),
+    api.post<AuthResponse>('/auth/register', data),
   
   logout: () => 
-    api.post('/logout'),
+    api.post('/auth/logout'),
   
   me: () => 
-    api.get<User>('/me'),
+    api.get<User>('/auth/me'),
   
   getCurrentUser: () => {
     if (typeof window === 'undefined') return null

@@ -140,7 +140,7 @@ function AppointmentsForm() {
         appointment_date: formData.appointmentDate,
         total_price: selectedService?.price || '0',
         notes: formData.notes || '',
-        status: 'scheduled',
+        status: 'pending',
       })
 
       setSuccess(true)
